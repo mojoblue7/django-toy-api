@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 # Secret key file
-settings.py
-
+#settings.py
+secrets.json

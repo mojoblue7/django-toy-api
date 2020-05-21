@@ -15,7 +15,8 @@ import datetime
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+FRONT_BASE_DIR = os.path.dirname(os.path.abspath(__file__)) + "/../../../django-toy-api-front"
+print(FRONT_BASE_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -36,23 +37,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'webpack_loader',
     'rest_framework',
     'rest_framework.authtoken',
-    'toy_api'
+    'api',
+    'toy_api',
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': {
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    },
+    # 'DEFAULT_PERMISSION_CLASSES': {
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # },
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-    ],
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'rest_framework.renderers.JSONRenderer',
+    # ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
@@ -76,6 +80,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'django_toy.urls'
@@ -83,7 +88,9 @@ ROOT_URLCONF = 'django_toy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(FRONT_BASE_DIR, 'django-toy-api-front', 'build')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +137,23 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Webpack
+# WEBPACK_LOADER = {
+#     'DEFAULT':{
+#         'BUNDLE_DIRNAME' : 'bundles/',
+#         'STATS_FILE' : os.path.join(BASE_DIR, 'webpack-stats.dev.json')
+#     }
+# }
+
+# Cors
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',    #React 도메인
+    'http://localhost:8000',    #Django 도메인
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -146,4 +170,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# WEBPACK_LOADER = {
+#     'DEFAULT': {
+#         'BUNDLE_DIR_NAME' : 'bundles/',
+#         'STATS_FILE': os.path.join(FRONT_BASE_DIR, 'webpack-stats.dev.json')
+#     }
+# }
+
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(FRONT_BASE_DIR, 'django-toy-api-front', 'build', 'static')
+]

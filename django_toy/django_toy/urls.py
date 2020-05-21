@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
 
+app_name = 'django_toy'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('toy_api/', include('toy_api.urls')),
+    path('api/', include('api.urls')),
     # path('api/token/', obtain_jwt_token),           # JWT 토큰을 발행
     # path('api/token/verify/', verify_jwt_token),    # JWT 토큰 유효성 검증
     # path('api/token/refresh/', refresh_jwt_token),  # JWT 토큰 갱신

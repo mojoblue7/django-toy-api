@@ -21,9 +21,12 @@ class UserInfo(models.Model):
     reg_date = models.DateTimeField(auto_now_add=True, null=False)
     mod_date = models.DateTimeField(auto_now=True, null=False)
 
-    def __str__(self):
-        UserInfo.objects.filter(reg_date__lte=timezone.now()).order_by('reg_date')
-        return self.id
+    def __str__(self) -> str:
+        # UserInfo.objects.filter(reg_date__lte=timezone.now()).order_by('reg_date')
+        return str(self.id)
+
+    class Meta:
+        ordering = ['id']
 
 
 @receiver(pre_save, sender=UserInfo)

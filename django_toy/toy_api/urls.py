@@ -13,7 +13,7 @@ router.register(r'user_info', views.UserInfoViewSet)
 app_name = 'toy_api'
 urlpatterns = [
     # path('', views.index, name='index'),
-    url(r'^signin/', SignUpView.as_view()),
+    url(r'^signup/', SignUpView.as_view()),
     url(r'^', include(router.urls)),
     url(r'^token/', obtain_jwt_token),
     url(r'^token/verify', verify_jwt_token),

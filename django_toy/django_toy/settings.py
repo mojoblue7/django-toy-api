@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os, json
 import datetime
 from django.core.exceptions import ImproperlyConfigured
-
+from corsheaders.defaults import default_headers
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONT_BASE_DIR = os.path.dirname(os.path.abspath(__file__)) + "/../../../django-toy-api-front"
@@ -23,6 +23,7 @@ secret_file = os.path.join(BASE_DIR, 'secrets.json')
 with open(secret_file) as f:
     secrets = json.loads(f.read())
 
+
 def get_secret(setting, secrets=secrets):
     """비밀 변수를 가져오거나 명시적 예외를 반환한다."""
     try:
@@ -30,6 +31,7 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         error_msg = f"Set the {setting} environment variable"
         raise ImproperlyConfigured
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -41,7 +43,8 @@ SECRET_KEY = get_secret("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -164,10 +167,17 @@ AUTH_PASSWORD_VALIDATORS = [
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',    #React 도메인
-    'http://localhost:8000',    #Django 도메인
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+    'http://localhost:3000',  # React 도메인
+    'http://localhost:8000',  # Django 도메인
 )
-
+CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_HEADERS = list(default_headers) +['X-XCSRFTOKEN',]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000']
+CORS_EXPOSE_HEADERS = (
+    'Access-Control-Allow-Origin: *'
+)
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
